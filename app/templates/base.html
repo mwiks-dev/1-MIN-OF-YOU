@@ -10,20 +10,13 @@
         <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}?20181213">
     </head>
     <header>
-        <div class ="intro">
-            <h1 align='center'>THIS IS 1 MIN OF YOU</h1>
-            <p align='center'>A platform that allows you to voice your pitches.Whether it is a pick up line,a sales pitch or product promotion,get typing and get seen!</p>
         <!--Navbar block-->  
         {% block navbar %}
         {% include 'navbar.html' %}
         {% endblock %}  
-        </div>
-
     </header>
     <body>
-        <!-- Content block -->
-
-        {% block content %}
-
-        {% endblock%}
+        {% block content%}
+        
+        {%endblock%}
     </body>

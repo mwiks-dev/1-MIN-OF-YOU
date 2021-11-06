@@ -9,5 +9,9 @@ app = Flask(__name__)
 # Setting up configuration
 app.config.from_object(DevConfig)
 
+#Initializing flask extensions
+bootstrap = Bootstrap(app)
+
+
 
 from app import views

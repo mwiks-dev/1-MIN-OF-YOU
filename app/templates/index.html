@@ -1,4 +1,4 @@
-{% extends 'base.html'%}
+{% extends 'bootstrap/base.html'%}
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,16 +8,32 @@
         {% else %}
         <title>1 Min Of You</title>
         {% endif %}
-        <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}?20181213">
+        {% block styles%}
+             {{ super() }}
+        <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}?20181211">
+        {% endblock %}
     </head>
     <header>
-        <div class ="intro">
-            <h1 align='center'>THIS IS 1 MIN OF YOU</h1>
-            <p align='center'>A platform that allows you to voice your pitches.Whether it is a pick up line,a sales pitch or product promotion,get typing and get seen!</p>
-        <!--Navbar block-->  
+       <!--Navbar-->  
         {% block navbar %}
         {% include 'navbar.html' %}
         {% endblock %}  
-        </div>
-
     </header>
+{%block content%}
+
+<div class="card">
+    <div class="card-body">
+        <div class="col-md-4">
+              <h3 class="card-title">Pick-up Line</h3>
+              <p class="card-text">Greetings and Salivations.</p>
+              <p class="card-text" >Uploaded By:Maryann</p>
+        </div>
+        <div class="col-md-4">
+              <h3 class="card-title">Pick-Up Line</h5>
+              <p class="card-text">Is it just the WiFi? Or am I totally feeling a connection?</p>
+              <p class="card-text">Uploaded By:Vodca</p>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

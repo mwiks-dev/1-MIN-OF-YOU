@@ -10,7 +10,7 @@
         {% endif %}
         {% block styles%}
              {{ super() }}
-        <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}?20181211">
+        <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}?20181213">
         {% endblock %}
     </head>
     <header>
@@ -19,21 +19,28 @@
         {% include 'navbar.html' %}
         {% endblock %}  
     </header>
-{%block content%}
-
-<div class="card">
-    <div class="card-body">
-        <div class="col-md-4">
-              <h3 class="card-title">Pick-up Line</h3>
-              <p class="card-text">Greetings and Salivations.</p>
-              <p class="card-text" >Uploaded By:Maryann</p>
-        </div>
-        <div class="col-md-4">
-              <h3 class="card-title">Pick-Up Line</h5>
-              <p class="card-text">Is it just the WiFi? Or am I totally feeling a connection?</p>
-              <p class="card-text">Uploaded By:Vodca</p>
+    <body>
+     {%block content%}
+     <div class="card">
+       <div class="card-body">
+            <div class="col-md-4">
+                <h3 class="card-title"><strong><u>Pick-up Line</u></strong></h3>
+                <p class="card-text">Greetings and Salivations.</p>
+                <p class="card-text">Uploaded By:<strong>Maryann</strong></p>
+            </div>
+            <div class="col-md-4">
+               <h3 class="card-title"><strong><u>Pick-Up Line</u></strong></h5>
+               <p class="card-text">Is it just the WiFi? Or am I totally feeling a connection?</p>
+               <p class="card-text">Uploaded By:<strong>Vodca</strong></p>
+            </div>
+            <div class="col-md-4">
+                <h3 class="card-title"><strong><u>Sales Pitch</u></strong></h5>
+                <p class="card-text">"Gap Inc. is a leading global retailer with a collection of brands including Old Navy, Gap, Banana Republic, and Athleta. We're committed to serving the needs of our customers while delivering long-term value to our shareholders.”
+                Gap is better known as a clothing brand, but the company behind it, Gap Inc, is a publicly traded firm with multiple successful brands under its belt. In its pitch to its potential investors, Gap Inc emphasizes its dominant position in the marketplace while ensuring that the company will be a secure long-term investment.</p>
+                <p class="card-text">Uploaded By:<strong>Mwikali</strong></p>
+             </div>
         </div>
     </div>
-</div>
+    </body>
 
 {%endblock%}

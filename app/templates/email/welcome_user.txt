@@ -1,0 +1,4 @@
+Hello {{user.username}}
+Welcome to 1 Min Of You
+We just saw you sign up for our website and we are ecstatic about that.Welcome to the family and get to view other people's pitches as you post yours.
+ 

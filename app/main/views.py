@@ -36,18 +36,20 @@ def new_pitch():
 
     return render_template('pitch.html',form = form)
 
-@main.route('/comment/<int:pitch_id')
-def comment(pitch_id):
-    form = CommentForm()
-    pitch = Pitch.query.get(pitch_id)
-    all_comments = Comment.query.filter_by(pitch_id).all()
-    if form.validate_on_submit():
-        title = form.title.data
-        comment = form.comment.data
-        user_id = current_user._get_current_object().id
-        new_comment = Comment(title=title,comment=comment,user_id=user_id)
-        #saving new comment
-        new_comment.save_comment()
-        return redirect(url_for('.comment',pitch_id=pitch_id))
-    return render_template('new_comment.html',form=form,pitch=pitch,all_comments=all_comments)
+# @main.route('/pitch/comment/new/<int:pitch_id')
+# @login_required
+# def new_comment(pitch_id):
+#     form = CommentForm()
+#     pitch = Pitch.query.get(pitch_id)
+#     all_comments = Comment.query.filter_by(pitch_id).all()
+
+#     if form.validate_on_submit():
+#         title = form.title.data
+#         comment = form.comment.data
+#         user_id = current_user._get_current_object().id
+#         new_comment = Comment(title=title,comment=comment,user_id=user_id)
+#         #saving new comment
+#         new_comment.save_comment()
+#         return redirect(url_for('.comment',pitch_id=pitch_id))
+#     return render_template('new_comment.html',form=form,pitch=pitch,all_comments=all_comments)
         

@@ -1,14 +1,18 @@
-from . import db
+from . import db, login_manager
 from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash,check_password_hash
+
+@login_manager.user_loader
+def load_user(user):
+    return User.get(user)
 
 class Pitch(db.Model):
 
     __tablename__ = 'pitches'
 
-    pId = db.Column(db.Integer,primary_key=True)
-    pCategory = db.Column(db.String(25))
+    id = db.Column(db.Integer,primary_key=True)
+    category = db.Column(db.String(25))
     context = db.Column(db.String)
     uploadedBy = db.Column(db.String(10))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
@@ -33,14 +37,14 @@ class Comment(db.Model):
         db.session.commit()
 
 
-class User(UserMixin, db.Model):
+class User(UserMixin,db.Model):
 
     __tablename__ = 'users'
 
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(20))
     bio = db.Column(db.String(50))
-    profile_pic_path = db.Column(db.String())
+    avatar = db.Column(db.String())
     email = db.Column(db.String(20),unique= True,index = True)
     password_hash = db.Column(db.String(20))
     password_secure = db.Column(db.String(20))

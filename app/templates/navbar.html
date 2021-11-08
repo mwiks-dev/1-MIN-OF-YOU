@@ -2,14 +2,16 @@
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="true" href="#">Home</a>
+          <a class="nav-link active" aria-current="true" href="/">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated %}
+        <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
+        <li><a href="{{url_for('auth.signout')}}">Sign out</a></li>
+        {% else %}
+        <li><a href="{{url_for('auth.signin')}}">Sign in</a></li>
+        {%endif%}
       </ul>
     </div>
     <div class="card-body">

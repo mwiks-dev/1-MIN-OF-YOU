@@ -1,41 +1,62 @@
 from . import db
+from datetime import datetime
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash,check_password_hash
 
-class Pitch:
+class Pitch(db.Model):
 
-    all_pitches = []
+    __tablename__ = 'pitches'
 
-    def __init__(self,pCategory,context,uploadedBy):
-        self.pCategory = pCategory
-        self.context = context
-        self.uploadedBy = uploadedBy
+    pId = db.Column(db.Integer,primary_key=True)
+    pCategory = db.Column(db.String(25))
+    context = db.Column(db.String)
+    uploadedBy = db.Column(db.String(10))
+    posted = db.Column(db.DateTime,default=datetime.utcnow)
 
     def save_pitch(self):
-        Pitch.all_pitches.append(self)
+        db.session.add(self)
+        db.session.commit()
 
-    @classmethod
-    def clear_pitches(cls):
-        Pitch.all_pitches.clear()
+    
+class Comment(db.Model):
 
-class Comment:
+    __tablename__ = 'comments'
 
-    all_comments = []
-    def __init__(self,pitch_id,title,content,by):
-        self.pitch_id = pitch_id
-        self.title = title
-        self.content = content
-        self.by = by
+    id = db.Column(db.Integer,primary_key=True)
+    pitch_id = db.Column(db.Integer)
+    pitch_comment = db.Column(db.String)
+    posted = db.Column(db.DateTime,default = datetime.utcnow)
+    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
 
     def save_comment(self):
-        Comment.all_comments.append(self)
+        db.session.add(self)
+        db.session.commit()
 
-    @classmethod
-    def clear_comments(cls):
-        Comment.all_comments.clear()
 
-class User(db.Model):
+class User(UserMixin, db.Model):
+
     __tablename__ = 'users'
+
     id = db.Column(db.Integer,primary_key = True)
-    username = db.Column(db.String(255))
+    username = db.Column(db.String(20))
+    bio = db.Column(db.String(50))
+    profile_pic_path = db.Column(db.String())
+    email = db.Column(db.String(20),unique= True,index = True)
+    password_hash = db.Column(db.String(20))
+    password_secure = db.Column(db.String(20))
+
+    @property
+    def password(self):
+        raise AttributeError('You cannnot read the password attribute')
+    
+    @password.setter
+    def password(self, password):
+        self.password_secure = generate_password_hash(password)
+
+
+    def verify_password(self,password):
+        return check_password_hash(self.password_secure,password)
+
 
     def __repr__(self):
         return f'User {self.username}'

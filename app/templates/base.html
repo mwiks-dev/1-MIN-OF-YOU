@@ -1,3 +1,11 @@
+{% extends 'bootstrap/base.html'%}
+{% import 'macros.html' as macro %}
+{% block styles %}
+   {{ super () }}
+   <!--Imports simple css and js files-->
+   {{ simplemde.css }}
+   {{ simplemde.js }}
+{% endblock %}
 <!DOCTYPE html>
 <html>
     <head>

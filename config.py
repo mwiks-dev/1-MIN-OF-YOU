@@ -15,6 +15,10 @@ class Config:
 
     UPLOADED_PHOTOS_DEST ='app/static/photos'
 
+    #simplemdeconfigurations
+    SIMPLEMDE_JS_IIFE = True
+    SIMPLEMDE_USE_CDN = True
+
 class ProdConfig(Config):
     '''
     Production  configuration child class

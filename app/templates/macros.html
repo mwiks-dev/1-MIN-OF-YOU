@@ -1,36 +1,9 @@
-<!-- {% extends 'bootstrap/base.html' %}
-{% macro displayPitch(pitches) %}
-<div class="pitch">
-  {% if pitches %}
-  {% for pitch in pitches %}  
-  <div class="card">
-    <div class="card-header">
-      {{pitch.title}}
+<!-- Displaying comments macro -->
+{% macro displayComments(comment_list) %}
+    {% for comment in comment_list %}
+    <div class="comment-card">
+        <h2> <a href="{{url_for('main.single_comment',id=comment.id)}}">{{comment.pitch_context}}</a> </h2>
     </div>
-    <div class="card-body ">
-      <blockquote class="blockquote mb-0">
-        <p id="quote">"{{pitch.post}}".</p>
-        <p class="blockquote-footer"> Posted by: <span class="small">{{pitch.user.username}}</span> on: <small class="text-muted mr-2">{{ pitch.time.strftime('%Y-%m-%d') }}</small></p>
-      </blockquote>
-      <div class="card-footer text-muted">
-        <div class="row actions">
-          <div class="col-md-4 ">
-            <span>{{pitch.comment.count()}} <i class="fas fa-comment"></i> <a href="{{url_for('main.comment',pitch_id = pitch.id)}}">Add Comment</a></span>
-          </div>
-          <!-- <div class="col-md-4 ">
-            <span> <a href="{{url_for('main.like',id = pitch.id)}}"><i class="fa fa-thumbs-up"></i> Upvotes: {{pitch.upvote.count()}}</a></span>
-          </div>
-          <div class="col-md-4 ">
-            <span> <a href="{{url_for('main.dislike',id = pitch.id)}}"> <i class="fa fa-thumbs-down"></i> Downvotes: {{pitch.downvote.count()}}</a></span>
-          </div>     -->
-        </div>
-      </div>
-    </div>
-  </div>
-  
- 
-  {% endfor %}
-  {% endif %}
-</div>
+    {% endfor %}
 
-{% endmacro %} -->
+{% endmacro %}

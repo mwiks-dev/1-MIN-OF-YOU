@@ -4,6 +4,7 @@ from . import main
 from ..models import Comment,Pitch, User
 from .forms import CommentForm, PitchForm,UpdateProfile
 from .. import db,photos
+import markdown2
 
 # Views
 @main.route('/')
@@ -76,20 +77,31 @@ def new_pitch():
 
     return render_template('pitch.html',pitch_form = form)
 
-# @main.route('/pitch/comment/new/<int:pitch_id')
-# @login_required
-# def new_comment(pitch_id):
-#     form = CommentForm()
-#     pitch = Pitch.query.get(pitch_id)
-#     all_comments = Comment.query.filter_by(pitch_id).all()
+@main.route('/pitch/comment/new/<int:id>', methods = ['GET','POST'])
+@login_required
+def new_comment(pitch_id):
+    form = CommentForm()
+    pitch=Pitch.query.get(pitch_id)
+    all_comments = Comment.query.filter_by(pitch_id)
+    if form.validate_on_submit():
+        title = form.title.data
+        comment = form.comment.data
+        pitch_id = pitch_id
+        user_id = current_user._get_current_object().id
+        # Updated comment instance
+        new_comment= Comment(title=title,comment=comment,user_id=user_id,pitch_id=pitch_id,comment_form=form)
 
-#     if form.validate_on_submit():
-#         title = form.title.data
-#         comment = form.comment.data
-#         user_id = current_user._get_current_object().id
-#         new_comment = Comment(title=title,comment=comment,user_id=user_id)
-#         #saving new comment
-#         new_comment.save_comment()
-#         return redirect(url_for('.comment',pitch_id=pitch_id))
-#     return render_template('new_comment.html',form=form,pitch=pitch,all_comments=all_comments)
+        # save review method
+        new_comment.save_comment()
+        return redirect(url_for('.comment',pitch_id = pitch_id ))
+    return render_template('new_comment.html',pitch=pitch,all_comments=all_comments)
+
+@main.route('/comment/<int:id>')
+@login_required
+def single_comment(id):
+    comment = Pitch.query.get(id)
+    if comment is None:
+        abort(404)
+    format_comment = markdown2.markdown(comment.pitch_comment,extras=["code-friendly","fenced-code blocks"])
+    return render_template('comment.html',comment = comment,format_comment = format_comment)
         

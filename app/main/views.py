@@ -58,13 +58,12 @@ def new_pitch():
     if form.validate_on_submit():
         category = form.category.data
         context = form.context.data
-        user_id = current_user._get_current_object().id
-        new_pitch = Pitch(category=category,context=context,user_id=user_id)
+        new_pitch = Pitch(category=category,context=context,user=current_user)
         #saving new pitch
         new_pitch.save_pitch()
         return redirect(url_for('main.index'))
 
-    return render_template('pitch.html',form = form)
+    return render_template('pitch.html',pitch_form = form)
 
 # @main.route('/pitch/comment/new/<int:pitch_id')
 # @login_required

@@ -1,9 +1,9 @@
-from flask import render_template,redirect,url_for,abort
+from flask import render_template,redirect,url_for,abort,request
 from flask_login.utils import login_required,current_user
 from . import main
 from ..models import Comment,Pitch, User
 from .forms import CommentForm, PitchForm,UpdateProfile
-from .. import db
+from .. import db,photos
 
 # Views
 @main.route('/')
@@ -18,7 +18,7 @@ def index():
     innovation = Pitch.query.filter_by(category = 'Innovation').all()
     humanity = Pitch.query.filter_by(category = 'Humanity').all()
     music = Pitch.query.filter_by(category = 'Music').all()
-    religion = Pitch.query.filter_by(category = 'Religion')
+    religion = Pitch.query.filter_by(category = 'Religion').all()
 
     return render_template('index.html',title = title,pitches = pitches,pickuplines=pickuplines,sales=sales,innovation=innovation,humanity=humanity,music=music,religion=religion)
 
@@ -49,6 +49,17 @@ def update_profile(name):
         return redirect(url_for('.profile',name = user.username))
 
     return render_template('profile/update.html',form =form)
+
+@main.route('/user/<name>/update/pic',methods= ['POST'])
+@login_required
+def update_pic(name):
+    user = User.query.filter_by(username = name).first()
+    if 'photo' in request.files:
+        filename = photos.save(request.files['photo'])
+        path = f'photos/{filename}'
+        user.avatar = path
+        db.session.commit()
+    return redirect(url_for('main.profile',name = name))
 
 @main.route('/create_new',methods = ['GET','POST'])
 @login_required

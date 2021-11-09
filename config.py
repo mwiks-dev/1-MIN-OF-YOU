@@ -3,8 +3,15 @@ class Config:
     General configuration parent class
     '''
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:4543@localhost/minofyou'
+    
 
-
+    SECRET_KEY = 'Mwiks01'
+    #  email configurations
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = "mwikali119@gmail.com"
+    MAIL_PASSWORD = "Kingzshiren12."
 
 class ProdConfig(Config):
     '''

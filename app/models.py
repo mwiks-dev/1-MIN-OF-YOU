@@ -4,17 +4,16 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash,check_password_hash
 
 @login_manager.user_loader
-def load_user(user):
-    return User.get(user)
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 class Pitch(db.Model):
 
     __tablename__ = 'pitches'
 
     id = db.Column(db.Integer,primary_key=True)
-    category = db.Column(db.String(25))
+    category = db.Column(db.String)
     context = db.Column(db.String)
-    uploadedBy = db.Column(db.String(10))
     posted = db.Column(db.DateTime,default=datetime.utcnow)
 
     def save_pitch(self):
@@ -42,12 +41,12 @@ class User(UserMixin,db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer,primary_key = True)
-    username = db.Column(db.String(20))
-    bio = db.Column(db.String(50))
+    username = db.Column(db.String(255),unique = True)
+    bio = db.Column(db.String(255))
     avatar = db.Column(db.String())
-    email = db.Column(db.String(20),unique= True,index = True)
-    password_hash = db.Column(db.String(20))
-    password_secure = db.Column(db.String(20))
+    email = db.Column(db.String(255),unique= True,index = True)
+    password_hash = db.Column(db.String(255))
+    password_secure = db.Column(db.String(255))
 
     @property
     def password(self):

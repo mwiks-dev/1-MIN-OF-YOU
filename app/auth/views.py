@@ -8,31 +8,32 @@ from ..email import mail_message
 
 @auth.route('/signup', methods = ["GET","POST"])
 def signup():
-  signupform = SignupForm()
-  if signupform.validate_on_submit():
-    user = User(email = signupform.email.data, username = signupform.username.data, password = signupform.password.data)
-    user.save_u()
+  form = SignupForm()
+  if form.validate_on_submit():
+    user = User(email = form.email.data, username = form.name.data, password = form.password.data)
+    db.session.add(user)
+    db.session.commit()
     mail_message("Welcome to 1 Min Of You","email/welcome_user",user.email,user=user)
-    return redirect(url_for('auth.signin'))
-  return render_template('auth/signup.html', signupform = signupform)
+    return redirect(url_for('auth.login'))
+  return render_template('auth/signup.html', signup_form = form)
 
 
-@auth.route('/signin', methods = ['GET','POST'])
-def signin():
-  signinform = SigninForm()
-  if signinform.validate_on_submit():
-    user = User.query.filter_by(email = signinform.email.data).first()
-    if user is not None and user.verify_password(signinform.password.data):
-      login_user(user,signinform.remember_me.data)
+@auth.route('/login', methods = ['GET','POST'])
+def login():
+  signin_form = SigninForm()
+  if signin_form.validate_on_submit():
+    user = User.query.filter_by(email = signin_form.email.data).first()
+    if user is not None and user.verify_password(signin_form.password.data):
+      login_user(user,signin_form.remember_me.data)
       return redirect(request.args.get('next') or url_for('main.index'))
 
     flash('Invalid username or Password')
   title = "1 Min Of You Login"
-  return render_template('auth/signin.html', signinform=signinform,title=title)
+  return render_template('auth/login.html', signin_form=signin_form,title=title)
 
 
-@auth.route('/signout')
+@auth.route('/logout')
 @login_required
-def signout():
+def logout():
   logout_user()
-  return redirect(url_for("auth.signin"))
+  return redirect(url_for("main.index"))

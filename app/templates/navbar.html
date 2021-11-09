@@ -2,21 +2,21 @@
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="true" href="/">Home</a>
+        <button class="btn btn-info"><a class="nav-link active" aria-current="true" href="/">Home</a></button>
         </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
         {% if current_user.is_authenticated %}
-        <li><a href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
-        <li><a href="{{url_for('auth.signout')}}">Sign out</a></li>
+        <li><button class="btn btn-info"><a href="{{url_for('main.profile',name=current_user.username)}}">Profile</a></button></li>
+        <li><button class="btn btn-info"><a href="{{url_for('auth.logout')}}">Sign Out</a></button></li>
+        <li><button class="btn btn-info"><a href="{{url_for('main.new_pitch')}}">Pitch Now</a></button></li>
         {% else %}
-        <li><a href="{{url_for('auth.signin')}}">Sign in</a></li>
+        <li><a href="{{url_for('auth.login')}}">Sign In</a></li>
         {%endif%}
       </ul>
+      
     </div>
     <div class="card-body">
-      <h1 class="card-title">1 Min Of You</h1>
+      <h1 class="card-title"><strong><i>1 Min Of You</i></strong></h1>
       <p class="card-text">A platform that allows you to voice your pitches.Whether it is a pick up line,a sales pitch or product promotion,get typing and get seen!</p>
-      <a href="#" class="btn btn-primary">Go somewhere</a>
+      <a href="#" class="btn btn-info">Go somewhere</a>
     </div>
 </div>

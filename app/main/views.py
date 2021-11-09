@@ -2,7 +2,8 @@ from flask import render_template,redirect,url_for,abort
 from flask_login.utils import login_required,current_user
 from . import main
 from ..models import Comment,Pitch, User
-from .forms import CommentForm, PitchForm
+from .forms import CommentForm, PitchForm,UpdateProfile
+from .. import db
 
 # Views
 @main.route('/')
@@ -17,8 +18,37 @@ def index():
     innovation = Pitch.query.filter_by(category = 'Innovation').all()
     humanity = Pitch.query.filter_by(category = 'Humanity').all()
     music = Pitch.query.filter_by(category = 'Music').all()
+    religion = Pitch.query.filter_by(category = 'Religion')
 
-    return render_template('index.html',title = title,pitches = pitches,pickuplines=pickuplines,sales=sales,innovation=innovation,humanity=humanity,music=music)
+    return render_template('index.html',title = title,pitches = pitches,pickuplines=pickuplines,sales=sales,innovation=innovation,humanity=humanity,music=music,religion=religion)
+
+@main.route('/user/<name>')
+def profile(name):
+    user = User.query.filter_by(username = name).first()
+
+    if user is None:
+        abort(404)
+
+    return render_template("profile/profile.html", user = user)
+
+@main.route('/user/<name>/update',methods = ['GET','POST'])
+@login_required
+def update_profile(name):
+    user = User.query.filter_by(username = name).first()
+    if user is None:
+        abort(404)
+
+    form = UpdateProfile()
+
+    if form.validate_on_submit():
+        user.bio = form.bio.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile',name = user.username))
+
+    return render_template('profile/update.html',form =form)
 
 @main.route('/create_new',methods = ['GET','POST'])
 @login_required

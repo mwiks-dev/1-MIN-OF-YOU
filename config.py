@@ -1,4 +1,5 @@
 import os
+
 class Config:
     '''
     General configuration parent class
@@ -42,7 +43,7 @@ class DevConfig(Config):
     DEBUG = True
 
 class TestConfig(Config):
-    
+
     DEBUG = True
 config_options = {
 'development':DevConfig,

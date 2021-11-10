@@ -4,6 +4,8 @@ class Config:
     '''
     General configuration parent class
     '''
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:4543@localhost/minofyou'
+
     
 
     SECRET_KEY = 'Mwiks01'

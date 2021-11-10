@@ -70,7 +70,7 @@ def new_pitch():
     if form.validate_on_submit():
         category = form.category.data
         context = form.context.data
-        new_pitch = Pitch(category=category,context=context,user=current_user)
+        new_pitch = Pitch(category=category,context=context)
         #saving new pitch
         new_pitch.save_pitch()
         return redirect(url_for('main.index'))
@@ -79,12 +79,12 @@ def new_pitch():
 
     return render_template('pitch.html',pitch_form = form,pitches=all_pitches)
 
-@main.route('/pitch/comment/new/<int:id>', methods = ['GET','POST'])
+@main.route('/comment/<int:id>', methods = ['GET','POST'])
 @login_required
 def new_comment(pitch_id):
     form = CommentForm()
     pitch=Pitch.query.get(pitch_id)
-    all_comments = Comment.query.filter_by(pitch_id)
+    all_comments = Comment.query.filter_by(pitch_id).all()
     if form.validate_on_submit():
         title = form.title.data
         comment = form.comment.data

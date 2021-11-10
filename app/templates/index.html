@@ -52,11 +52,10 @@
                 <div class="panel panel-default ">
                     <div class="panel-body text-start">
                         <h5>Category : {{ pitch.category }}</h5>
-                        <h5>Content : {{ pitch.content }}</h5>
-                        <p>Posted on : {{pitch.date_posted.strftime('%Y-%m-%d')}}</p>
+                        <h5>Pitch : {{ pitch.context }}</h5>
                         <p>Posted by : {{pitch.user.username}}</p>
                     </div>
-                    <div class="panel-footer">
+                    <!-- <div class="panel-footer">
                         <div class = "col-md-4"><button class="btn-success"><a href="{{ url_for('main.post_details', id = post.id)}}">Add a
                             comment</button></a></div>
                         <div class="col-md-4">
@@ -64,7 +63,7 @@
                         </div>
                         <div class="col-md-4">
                             <span class="foot"> <a href="{{url_for('main.dislike',id = post.id)}}"> <button class="btn-danger">Downvotes:{{post.downvote.count()}}</button></a></span>
-                        </div>
+                        </div> -->
                     </div>
     
                 </div>

@@ -1,7 +1,7 @@
-from flask import render_template,redirect,url_for,abort,request
+from flask import render_template,redirect,url_for,abort,request,flash
 from flask_login.utils import login_required,current_user
 from . import main
-from ..models import Comment,Pitch, User
+from ..models import Comment,Pitch, User,Upvote,Downvote
 from .forms import CommentForm, PitchForm,UpdateProfile
 from .. import db,photos
 import markdown2
@@ -74,8 +74,10 @@ def new_pitch():
         #saving new pitch
         new_pitch.save_pitch()
         return redirect(url_for('main.index'))
+    else:
+        all_pitches = Pitch.query.order_by(Pitch.posted).all
 
-    return render_template('pitch.html',pitch_form = form)
+    return render_template('pitch.html',pitch_form = form,pitches=all_pitches)
 
 @main.route('/pitch/comment/new/<int:id>', methods = ['GET','POST'])
 @login_required
@@ -104,4 +106,40 @@ def single_comment(id):
         abort(404)
     format_comment = markdown2.markdown(comment.pitch_comment,extras=["code-friendly","fenced-code blocks"])
     return render_template('comment.html',comment = comment,format_comment = format_comment)
+
+@main.route('/like/<int:id>', methods=['GET', 'POST'])
+@login_required
+def like(id):
+    pitch = Pitch.query.get(id)
+    if pitch is None:
+        abort(404)
+    like = Upvote.query.filter_by(user_id=current_user.id, pitch_id=id).first()
+    if like is not None:
+        db.session.delete(like)
+        db.session.commit()
+        return redirect(url_for('main.index'))
+    new_like = Upvote(user_id=current_user.id,pitch_id=id)
+    db.session.add(new_like)
+    db.session.commit()
+    return redirect(url_for('main.index'))
+
+
+@main.route('/dislike/<int:id>', methods=['GET', 'POST'])
+@login_required
+def dislike(id):
+    pitch = Pitch.query.get(id)
+    if pitch is None:
+        abort(404)
+    
+    dislike = Downvote.query.filter_by(user_id=current_user.id, pitch_id=id).first()
+    
+    if dislike is not None:   
+        db.session.delete(dislike)
+        db.session.commit()
+        return redirect(url_for('.index'))
+
+    new_dislike = Downvote(user_id=current_user.id,pitch_id=id)
+    db.session.add(new_dislike)
+    db.session.commit()
+    return redirect(url_for('.index'))
         

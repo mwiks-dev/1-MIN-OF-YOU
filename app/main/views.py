@@ -14,6 +14,7 @@ def index():
     '''
     title = '1MinOfYou'
     pitches = Pitch.query.all()
+    users = User.query.all()
     pickuplines = Pitch.query.filter_by(category = 'Pick-up Lines').all()
     sales = Pitch.query.filter_by(category = 'Sales').all()
     innovation = Pitch.query.filter_by(category = 'Innovation').all()
@@ -21,7 +22,7 @@ def index():
     music = Pitch.query.filter_by(category = 'Music').all()
     religion = Pitch.query.filter_by(category = 'Religion').all()
 
-    return render_template('index.html',title = title,pitches = pitches,pickuplines=pickuplines,sales=sales,innovation=innovation,humanity=humanity,music=music,religion=religion)
+    return render_template('index.html',title = title,pitches = pitches,pickuplines=pickuplines,sales=sales,innovation=innovation,humanity=humanity,music=music,religion=religion,users=users)
 
 @main.route('/user/<name>')
 def profile(name):
@@ -79,26 +80,26 @@ def new_pitch():
 
     return render_template('pitch.html',pitch_form = form,pitches=all_pitches)
 
-@main.route('/comment/<int:id>', methods = ['GET','POST'])
+@main.route('/comment/<int:pitch_id>', methods = ['GET','POST'])
 @login_required
 def new_comment(pitch_id):
     form = CommentForm()
     pitch=Pitch.query.get(pitch_id)
-    all_comments = Comment.query.filter_by(pitch_id).all()
+    all_comments = Comment.query.filter_by(pitch_id = pitch_id).all()
     if form.validate_on_submit():
         title = form.title.data
         comment = form.comment.data
         pitch_id = pitch_id
         user_id = current_user._get_current_object().id
         # Updated comment instance
-        new_comment= Comment(title=title,comment=comment,user_id=user_id,pitch_id=pitch_id,comment_form=form)
+        new_comment= Comment(title=title,pitch_comment=comment,user_id=user_id,pitch_id=pitch_id)
 
         # save review method
         new_comment.save_comment()
-        return redirect(url_for('.comment',pitch_id = pitch_id ))
-    return render_template('new_comment.html',pitch=pitch,all_comments=all_comments)
+        return redirect(url_for('.new_comment',pitch_id = pitch_id))
+    return render_template('new_comment.html',pitch=pitch,all_comments=all_comments,comment_form=form)
 
-@main.route('/comment/<int:id>')
+@main.route('/pitch/comment/<int:pitch_id>')
 @login_required
 def single_comment(id):
     comment = Pitch.query.get(id)

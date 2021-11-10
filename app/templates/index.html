@@ -53,8 +53,8 @@
                     <div class="card-body">
                         <h3 class = "card-title">Category : {{ pitch.category }}</h3>
                         <p class = "card-text">Pitch : {{ pitch.context }}</h4>
-                        <p class = "card-text">Posted by : {{pitch.username}}</p>
-                        <a class =" btn btn-info" href="{{ url_for('main.new_comment', id = pitch.id)}}">Comment</a>
+                        <p class = "card-text">Posted by : {{users.username}}</p>
+                        <a class =" btn btn-info" href="{{ url_for('main.new_comment', pitch_id = pitch.id)}}">Comment</a>
                         <a class =" btn btn-info" href="{{url_for('main.like',id = pitch.id)}}">Upvotes:{{pitch.upvote.count()}}</a>
                         <a class =" btn btn-danger" href="{{url_for('main.dislike',id = pitch.id)}}">Downvotes:{{pitch.downvote.count()}}</a>
                     </div>

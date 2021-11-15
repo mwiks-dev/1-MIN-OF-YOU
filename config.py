@@ -4,13 +4,9 @@ class Config:
     '''
     General configuration parent class
     '''
-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:4543@localhost/minofyou'
+    SECRET_KEY = os.environ.get('SECRET_KEY')
 
     
-
-    SECRET_KEY = 'Mwiks01'
-
-    DEBUG = True
     #  email configurations
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
@@ -24,6 +20,8 @@ class Config:
     SIMPLEMDE_JS_IIFE = True
     SIMPLEMDE_USE_CDN = True
 
+    DEBUG = True
+
 class ProdConfig(Config):
     '''
     Production  configuration child class
@@ -31,7 +29,9 @@ class ProdConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL","")
+    if SQLALCHEMY_DATABASE_URI.startswith("postgres://"):
+        SQLALCHEMY_DATABASE_URI =SQLALCHEMY_DATABASE_URI.replace("postgres://","postgresql://",)
 
 
 class DevConfig(Config):
@@ -45,6 +45,7 @@ class DevConfig(Config):
     DEBUG = True
 
 class TestConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 
     DEBUG = True
 config_options = {
